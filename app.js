@@ -13,7 +13,6 @@ import {
   initModalClosers
 } from './domHandlers.js';
 
-// فال بیکس اور سیف ہینڈلرز تاکہ کوئی بھی فنکشن کال ہونے پر کوڈ کریش نہ ہو
 const setLanguage = (lang) => { console.log(`Language set to ${lang}`); };
 const sanitizeHTML = (str) => str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
 const safeParseJSON = (str, fallback) => { try { return str ? JSON.parse(str) : fallback; } catch(e) { return fallback; } };
@@ -23,7 +22,6 @@ const generateAutoNumber = () => 'INV-' + Math.floor(100000 + Math.random() * 90
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // PERFORMANCE SELECTOR CACHE
   const cache = {
     bizName: document.getElementById('bizName'),
     bizEmail: document.getElementById('bizEmail'),
@@ -92,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dashTotalInvoiced: document.getElementById('dashTotalInvoiced')
   };
 
-  // INITIAL DATA & STATE ACTIONS
   let state = {
     items: [{ id: Date.now(), desc: '', qty: '', price: '' }],
     logoData: localStorage.getItem('rgp_logoData') || null,
@@ -107,10 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let itemMemory = safeParseJSON(localStorage.getItem('rgp_item_memory'), []);
   let notesLibrary = safeParseJSON(localStorage.getItem('rgp_notes_library'), []);
 
-  if (typeof injectStyles === "function") injectStyles();
-  if (typeof injectUIElements === "function") injectUIElements();
-
-  // BUG FIX: formatMoney moved here so it is available to all functions below
   const formatMoney = (amount) => {
     const val = cache.currencySelect?.value || 'USD|$';
     const parts = val.split('|');
@@ -139,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('dueDateOffset')?.addEventListener('change', calculateCalculatedDueDate);
   cache.issueDate?.addEventListener('change', calculateCalculatedDueDate);
 
-  // NOTES & TERMS SNIPPET LIBRARY CONTROLLER
   const renderNotesLibraryDropdown = () => {
     const dbox = document.getElementById('libraryTargetSelect');
     if (!dbox) return;
@@ -195,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderNotesLibraryDropdown();
 
-  // SNAPSHOT & RECOVERY CONTROLLERS
   const captureCurrentFormSnapshot = () => {
     return {
       bizName: cache.bizName?.value || '',
@@ -268,20 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
     UndoRedoEngine.pushState(snap);
     executeStorageBackup();
   }, 700);
-
-  (() => {
-    const recoveryTarget = localStorage.getItem('rgp_autosave_draft_cache');
-    if (recoveryTarget) {
-      try {
-        const parsed = JSON.parse(recoveryTarget);
-        if (parsed && Object.keys(parsed).length > 0) {
-          applySnapshotToForm(parsed);
-        }
-      } catch (err) {
-        console.warn("Auto-recovery sequence fallback triggered due to data anomalies.", err);
-      }
-    }
-  })();
 
   const validateForm = () => {
     let formsValid = true;
@@ -508,7 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // DOM HANDLERS INITIALIZATION
   initTabSwitching(validateForm, updatePreview);
   initDarkMode();
   initModalClosers();
@@ -524,7 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   updateItemMemoryList();
 
-  // ROUTER CONTROLLERS FOR CORE ROW MUTATIONS (EXPOSED TO WINDOW)
   window.itemActions = {
     duplicate(id) {
       state.items = itemActions.duplicate(state.items, id);
@@ -546,7 +521,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // DYNAMIC ITEMS EDITOR GENERATOR (FIXED INLINE CLICK ESCAPE)
   const renderItemsEditor = () => {
     if(!cache.itemsBody) return;
     cache.itemsBody.innerHTML = '';
@@ -626,7 +600,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // REALTIME PREVIEW ENGINE & A4 FLOW MONITOR
   const updatePreview = () => {
     document.querySelectorAll('[data-bind]').forEach(el => {
       const key = el.getAttribute('data-bind');
@@ -739,7 +712,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (prevDue) { prevDue.textContent = `Due Date: ${cache.dueDate.value}`; prevDue.style.display = 'block'; }
     } else if (prevDue) { prevDue.style.display = 'none'; }
 
-    // DYNAMIC A4 MEASUREMENT SUB-ROUTINE
     setTimeout(() => {
       const paper = cache.receiptPaper;
       const statusEl = document.getElementById('a4-overflow-status');
@@ -780,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
   };
 
-  window.updatePreview = updatePreview; // ایکسٹرنل فائل کالز کے لیے گلوبل اسکوپ میں سیٹ کر دیا گیا ہے
+  window.updatePreview = updatePreview;
 
   const handleFile = (id, stateKey) => {
     const fileInput = document.getElementById(id);
@@ -808,7 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
 
-  // CUSTOMER / PAYMENT PROFILE TARGET ENGINES
   const updateDropdowns = () => {
     domUpdateDropdowns(savedClients, savedPayments, sanitizeHTML);
     initClientSelection(savedClients, cache, updatePreview);
@@ -839,7 +810,6 @@ document.addEventListener('DOMContentLoaded', () => {
     alert("Payment Parameter Gateway Profile Saved!");
   });
 
-  // RESET & HISTORICAL VAULT CONTROLLER
   document.getElementById('btnReset')?.addEventListener('click', () => {
     if(confirm("Reset entire active structural composer layout sheet?")) {
       document.querySelectorAll('input:not([type="file"]):not(#themeColorSelect), textarea').forEach(el => el.value = '');
@@ -874,7 +844,6 @@ document.addEventListener('DOMContentLoaded', () => {
     alert("Record Saved To System Vault Ledger.");
   });
 
-  // HOTKEYS GLOBAL ROUTING HOOKS
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
       const key = e.key.toLowerCase();
@@ -887,7 +856,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // EXPOSE GLOBAL RUNTIME INTERFACES (FIXED FOR MODULAR INTEGRATION)
   window.app = {
     loadHistoryItem: (i) => {
       const h = historyLogs[i];
@@ -968,8 +936,21 @@ document.addEventListener('DOMContentLoaded', () => {
   if(cache.issueDate && !cache.issueDate.value) cache.issueDate.valueAsDate = new Date();
   if(cache.taxLabelInput && !cache.taxLabelInput.value) cache.taxLabelInput.value = 'Tax';
 
-  // APP HANDLER BOOTSTRAPPING
   renderItemsEditor();
   renderHistoryLogs();
   updatePreview();
+
+  (() => {
+    const recoveryTarget = localStorage.getItem('rgp_autosave_draft_cache');
+    if (recoveryTarget) {
+      try {
+        const parsed = JSON.parse(recoveryTarget);
+        if (parsed && Object.keys(parsed).length > 0) {
+          applySnapshotToForm(parsed);
+        }
+      } catch (err) {
+        console.warn("Auto-recovery sequence fallback triggered due to data anomalies.", err);
+      }
+    }
+  })();
 });
