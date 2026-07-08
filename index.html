@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Free Online Invoice Generator | Professional Invoice & Receipt Maker</title>
+    
+    <meta name="description" content="Create, customize, and download professional PDF invoices instantly. 100% offline, no upload required. Free VAT/GST-compliant templates for freelancers and small businesses.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <link rel="canonical" href="https://yourdomain.com/">
+    
+    <meta name="author" content="Aadil @ E-X-P-R-T">
+    <meta name="publisher" content="E-X-P-R-T Enterprise">
+    <meta name="application-name" content="E-X-P-R-T Invoice Pro">
+    <meta name="theme-color" content="#1a56db">
+    
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+    
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="E-X-P-R-T Enterprise">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Free Online Invoice Generator | Professional Invoice Maker">
+    <meta property="og:description" content="Generate high-converting, professional PDF invoices and business receipts instantly. 100% offline, secure, multi-currency setup for modern freelancers and businesses.">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:image" content="https://yourdomain.com/assets/og-invoice-builder.jpg">
+    <meta property="og:image:secure_url" content="https://yourdomain.com/assets/og-invoice-builder.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="E-X-P-R-T Professional Enterprise Invoice & Receipt Builder Application Interface">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yourtwitterhandle">
+    <meta name="twitter:creator" content="@yourtwitterhandle">
+    <meta name="twitter:title" content="Free Online Invoice Generator | Professional Invoice Builder">
+    <meta name="twitter:description" content="Instantly design and download itemized enterprise PDF invoices and structured business receipts with full multi-currency and payment gateway support.">
+    <meta name="twitter:image" content="https://yourdomain.com/assets/og-invoice-builder.jpg">
+    <meta name="twitter:image:alt" content="E-X-P-R-T Invoice Generator Interface">
+    
+    <link rel="alternate" hreflang="x-default" href="https://yourdomain.com/">
+    <link rel="alternate" hreflang="en" href="https://yourdomain.com/">
+    <link rel="alternate" hreflang="ur" href="https://yourdomain.com/?lang=ur">
+    <link rel="alternate" hreflang="fr" href="https://yourdomain.com/?lang=fr">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* ==========================================================================
+           PREMIUM INVOICE WATERMARK & REDESIGNED BOTTOM SECTION STYLES
+           ========================================================================== */
+        
+        /* Watermark Styles */
+        .receipt-paper { position: relative; overflow: hidden; }
+        .invoice-watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-35deg);
+            font-size: 8rem; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.5rem; color: rgba(0, 0, 0, 0.03);
+            pointer-events: none; user-select: none; z-index: 1;
+            white-space: nowrap; display: block;
+        }
+        [data-theme="dark"] .invoice-watermark { color: rgba(255, 255, 255, 0.03); }
+        
+        /* Redesigned Premium Bottom Grid Infrastructure */
+        .premium-bottom-container {
+            display: flex; flex-direction: column; gap: 24px;
+            margin-top: 30px; position: relative; z-index: 2; font-family: inherit;
+        }
+        
+        /* Premium Shared Card Component - REDESIGNED BEAUTIFUL BORDER & SHADOW */
+        .premium-card {
+            background: #ffffff; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 16px; /* Smoother premium rounded corners */
+            padding: 24px; 
+            /* Soft premium depth shadow */
+            box-shadow: 0 10px 15px -3px rgba(148, 163, 184, 0.06), 0 4px 6px -4px rgba(148, 163, 184, 0.04);
+            display: flex; 
+            flex-direction: column; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+        }
+        [data-theme="dark"] .premium-card {
+            background: #1e293b; 
+            border-color: #334155; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25);
+        }
+        .premium-card h4 {
+            color: #1a56db !important; font-size: 0.85rem !important; font-weight: 700 !important;
+            text-transform: uppercase !important; letter-spacing: 0.075em !important;
+            margin: 0 0 14px 0 !important; display: flex !important; align-items: center !important;
+            gap: 8px !important; border: none !important; padding: 0 !important;
+        }
+        .premium-card h4 svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+        
+        /* Row Layout Managers - STRICT ENFORCEMENT */
+        .premium-row-three { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 20px; align-items: stretch; }
+        .premium-row-two { display: grid; grid-template-columns: repeat(2, 1fr) !important; gap: 20px; align-items: stretch; }
+        
+        /* Internal Card Component Refinements */
+        .bank-details-text { font-size: 0.8rem; line-height: 1.5; color: #475569; }
+        [data-theme="dark"] .bank-details-text { color: #94a3b8; }
+        
+        .premium-qr-wrapper {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; height: 100%;
+        }
+        .premium-qr-wrapper img {
+            max-width: 90px; height: auto; border-radius: 6px; margin: 8px 0;
+            border: 1px solid #f1f5f9; padding: 4px; background: #ffffff;
+        }
+        .premium-card .notes-terms-list { font-size: 0.8rem; line-height: 1.5; color: #475569; }
+        [data-theme="dark"] .premium-card .notes-terms-list { color: #94a3b8; }
+        
+        /* Signature Block Framework */
+        .premium-signature-block {
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            text-align: center; min-height: 120px; padding-top: 10px;
+        }
+        .premium-sig-img { max-height: 55px; width: auto; margin-bottom: 8px; mix-blend-mode: multiply; }
+        [data-theme="dark"] .premium-sig-img { mix-blend-mode: normal; filter: brightness(0.9) invert(1); }
+        .premium-sig-line {
+            width: 100%; max-width: 220px; border-top: 1.5px solid #cbd5e1; margin-top: auto;
+            padding-top: 6px; font-size: 0.8rem; font-weight: 600; color: #334155;
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        [data-theme="dark"] .premium-sig-line { border-color: #475569; color: #cbd5e1; }
+        
+        /* ==========================================================================
+           2026 SEMANTIC SEO CONTENT DEEP EXTENSION SYSTEM
+           ========================================================================== */
+        
+        .seo-master-container {
+            max-width: 1200px; margin: 60px auto 40px auto; padding: 40px;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .seo-master-container { background: #0f172a; border-color: #1e293b; box-shadow: none; }
+        
+        .seo-article-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+        .seo-main-text h2 {
+            font-size: 1.75rem; color: #0f172a; margin-top: 30px; margin-bottom: 15px;
+            font-weight: 700; border-left: 4px solid #1a56db; padding-left: 12px;
+        }
+        [data-theme="dark"] .seo-main-text h2 { color: #f1f5f9; border-left-color: #3b82f6; }
+        .seo-main-text h3 { font-size: 1.25rem; color: #1e293b; margin-top: 20px; margin-bottom: 10px; font-weight: 600; }
+        [data-theme="dark"] .seo-main-text h3 { color: #e2e8f0; }
+        .seo-main-text p { font-size: 0.975rem; color: #475569; line-height: 1.7; margin-bottom: 16px; text-align: justify; }
+        [data-theme="dark"] .seo-main-text p { color: #94a3b8; }
+        .seo-main-text ul { margin: 0 0 20px 20px; padding: 0; }
+        .seo-main-text li { font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 8px; }
+        [data-theme="dark"] .seo-main-text li { color: #94a3b8; }
+        
+        .seo-sidebar-cards { display: flex; flex-direction: column; gap: 24px; }
+        .seo-helper-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; }
+        [data-theme="dark"] .seo-helper-card { background: #1e293b; border-color: #334155; }
+        .seo-helper-card h3 { font-size: 1.15rem; margin: 0 0 12px 0; color: #1a56db; }
+        [data-theme="dark"] .seo-helper-card h3 { color: #3b82f6; }
+        
+        .seo-faq-block { margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 30px; }
+        [data-theme="dark"] .seo-faq-block { border-top-color: #1e293b; }
+        .seo-faq-item { margin-bottom: 24px; }
+        .seo-faq-item h3 { font-size: 1.1rem; color: #0f172a; margin-bottom: 8px; font-weight: 600; }
+        [data-theme="dark"] .seo-faq-item h3 { color: #f1f5f9; }
+        
+        /* SEO Hidden H1 style helper */
+        .seo-h1-header {
+            text-align: center;
+            font-size: 2rem;
+            color: #1a56db;
+            margin: 20px 0;
+            font-weight: 800;
+        }
+        [data-theme="dark"] .seo-h1-header { color: #3b82f6; }
+        
+        /* Header & Footer Styling Enhancements */
+        .site-header { padding: 15px 20px; background: var(--surface-color, #fff); border-bottom: 1px solid #e2e8f0; }
+        .header-nav { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
+        .header-links, .header-lang { display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; align-items: center; font-size: 0.9rem;}
+        .header-links a, .header-lang a { text-decoration: none; color: #475569; font-weight: 500; }
+        .header-links a:hover { color: #1a56db; }
+        .brand-logo { font-weight: 800; font-size: 1.2rem; color: #1a56db; }
+        
+        .site-footer { text-align: center; padding: 40px 20px; font-size: 0.9rem; color: #475569; border-top: 1px solid #e2e8f0; margin-top: 40px; background: #f8fafc; }
+        [data-theme="dark"] .site-footer { background: #0f172a; border-color: #1e293b; color: #94a3b8; }
+        .footer-nav { margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-nav a { color: #1a56db; text-decoration: none; font-weight: 500; }
+        [data-theme="dark"] .footer-nav a { color: #3b82f6; }
+        .footer-nav a:hover { text-decoration: underline; }
+
+        /* Responsive Breakpoints - Cleaned to Lock 3+2 Configuration */
+        @media (max-width: 1024px) {
+            .seo-article-wrapper { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .seo-master-container { padding: 20px; margin: 30px 10px; }
+            .header-nav { flex-direction: column; }
+        }
+    </style>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://yourdomain.com/#webapp",
+          "url": "https://yourdomain.com/",
+          "name": "E-X-P-R-T Invoice Pro",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires HTML5, WebGL, JavaScript Support.",
+          "softwareVersion": "2.0.0",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "featureList": "100% Offline Generation, No Upload Requirement, Multi-Currency Support, VAT/GST Calculation, Secure Client-Side PDF Rendering",
+          "author": {
+            "@id": "https://yourdomain.com/#organization"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://yourdomain.com/#organization",
+          "name": "E-X-P-R-T Enterprise",
+          "url": "https://yourdomain.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://yourdomain.com/assets/logo.png",
+            "width": 112,
+            "height": 112
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "support@yourdomain.com",
+            "availableLanguage": ["English", "Urdu", "Arabic", "Hindi", "French", "German", "Spanish"]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://yourdomain.com/#website",
+          "url": "https://yourdomain.com/",
+          "name": "Free Online Invoice Generator by E-X-P-R-T",
+          "description": "Create, design, customize, and issue high-converting professional invoices and compliance business receipts safely with zero fees. 100% offline functionality.",
+          "publisher": {
+            "@id": "https://yourdomain.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yourdomain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://yourdomain.com/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://yourdomain.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Invoice Builder",
+              "item": "https://yourdomain.com/#webapp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://yourdomain.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I create a PDF invoice using this online invoice generator?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Simply populate your Document Settings, add your business logo, fill out client details, insert itemized lines with optional tax/discount rates, and click 'Download PDF' to instantly receive a perfectly structured business record."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is the invoice generation process really 100% offline?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Our E-X-P-R-T Invoice Pro operates entirely within your local browser workspace. There is absolutely no upload required, meaning your sensitive financial data never touches our servers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I generate VAT and GST compliant invoices for international trade?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform provides fully customizable tax labels. You can easily adjust settings to create VAT invoices for the United Kingdom and Europe, or GST-compliant items for Australia and Canada."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does this platform securely save client data and document configurations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "All operations process client-side for maximum security. Your generated items can be backed up locally into a single secure JSON dashboard payload or exported directly into structured CSV configurations."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script> 
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="header-nav" aria-label="Primary Navigation">
+            <div class="brand-logo">E-X-P-R-T PRO</div>
+            <ul class="header-links">
+                <li><a href="/" aria-current="page">Home</a></li>
+                <li><a href="#webapp">Invoice Builder</a></li>
+                <li><a href="#history">History</a></li>
+                <li><a href="#workspace">Workspace</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+            <ul class="header-lang">
+                <li><a href="?lang=en" aria-label="English">🇺🇸 EN</a></li>
+                <li><a href="?lang=ur" aria-label="Urdu">🇵🇰 UR</a></li>
+                <li><a href="?lang=ar" aria-label="Arabic">🇸🇦 AR</a></li>
+                <li><a href="?lang=hi" aria-label="Hindi">🇮🇳 HI</a></li>
+                <li><a href="?lang=fr" aria-label="French">🇫🇷 FR</a></li>
+                <li><a href="?lang=de" aria-label="German">🇩🇪 DE</a></li>
+                <li><a href="?lang=es" aria-label="Spanish">🇪🇸 ES</a></li>
+                <li><a href="#" onclick="app.showAuth('login'); return false;">Login</a></li>
+                <li><a href="#" onclick="app.showAuth('signup'); return false;">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="webapp">
+        <h1 class="seo-h1-header">Free Enterprise Invoice Generator & Receipt Builder</h1>
+
+        <div class="mobile-tabs" role="tablist" aria-label="Mobile Configuration Control"> 
+            <button id="tabEditor" class="tab-btn active" data-i18n="tab_editor" role="tab" aria-selected="true" aria-controls="editorSection">📝 Editor</button> 
+            <button id="tabPreview" class="tab-btn" data-i18n="tab_preview" role="tab" aria-selected="false" aria-controls="previewSection">👁️ Preview</button> 
+        </div> 
+        
+        <div class="main-content"> 
+            <section id="editorSection" class="editor-section active-tab" aria-label="Document Customization Console"> 
+                <div class="editor-sidebar" role="tablist" aria-label="Workspace Modules"> 
+                    <button class="sticker-btn active" data-target="sec-doc" role="tab" aria-selected="true" aria-controls="sec-doc"><span aria-hidden="true">📄</span> <div data-i18n="side_doc">Document</div></button> 
+                    <button class="sticker-btn" data-target="sec-company" role="tab" aria-selected="false" aria-controls="sec-company"><span aria-hidden="true">🏢</span> <div data-i18n="side_company">Company</div></button> 
+                    <button class="sticker-btn" data-target="sec-customer" role="tab" aria-selected="false" aria-controls="sec-customer"><span aria-hidden="true">👤</span> <div data-i18n="side_customer">Customer</div></button> 
+                    <button class="sticker-btn" data-target="sec-items" role="tab" aria-selected="false" aria-controls="sec-items"><span aria-hidden="true">🛍️</span> <div data-i18n="side_items">Items & Tax</div></button> 
+                    <button class="sticker-btn" data-target="sec-payment" role="tab" aria-selected="false" aria-controls="sec-payment"><span aria-hidden="true">💳</span> <div data-i18n="side_payment">Payment</div></button> 
+                    <button class="sticker-btn" data-target="sec-extras" role="tab" aria-selected="false" aria-controls="sec-extras"><span aria-hidden="true">📝</span> <div data-i18n="side_extras">Extras</div></button> 
+                    <button class="sticker-btn" data-target="sec-history" role="tab" aria-selected="false" aria-controls="sec-history"><span aria-hidden="true">📜</span> <div data-i18n="side_history">History</div></button> 
+                </div> 
+                <form class="editor-forms" id="mainForm" onsubmit="return false;"> 
+                    <div id="sec-doc" class="editor-tab-content active card" role="tabpanel"> 
+                        <h2 data-i18n="doc_title">Document Settings</h2> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="themeColorSelect" data-i18n="doc_theme">Print Theme Color</label><input type="color" id="themeColorSelect" value="#1a56db" style="height:45px; padding:2px; cursor:pointer;" aria-label="Theme Color"></div> 
+                            <div class="form-group"><label for="receiptType" data-i18n="doc_type">Type</label><select id="receiptType" data-bind="type"><option value="Invoice">Invoice</option><option value="Receipt">Receipt</option></select></div> 
+                        </div> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="receiptNumber" data-i18n="doc_number">Number</label><div style="display:flex; gap:8px;"><input type="text" id="receiptNumber" data-bind="number" placeholder="INV-2026-XXXX"><button id="btnAutoNum" class="btn-secondary" type="button" aria-label="Generate Random Number">↻</button></div></div> 
+                            <div class="form-group"><label for="issueDate" data-i18n="doc_date">Issue Date</label><input type="date" id="issueDate" data-bind="date"></div> 
+                        </div> 
+                        <div class="form-row"> 
+                            <div class="form-group"> 
+                                <label for="currencySelect" data-i18n="doc_currency">Currency</label> 
+                                <select id="currencySelect"> 
+                                    <option value="USD|$">USD ($)</option> 
+                                    <option value="PKR|Rs">PKR (Rs)</option> 
+                                    <option value="EUR|€">EUR (€)</option> 
+                                    <option value="GBP|£">GBP (£)</option> 
+                                    <option value="AUD|$">AUD ($)</option> 
+                                    <option value="CAD|$">CAD ($)</option> 
+                                </select> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    
+                    <div id="sec-company" class="editor-tab-content card" role="tabpanel"> 
+                        <div class="flex-between" style="margin-bottom:16px;"><h2 style="margin:0; border:none;" data-i18n="comp_title">Company Profile</h2></div> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="logoUpload" data-i18n="comp_logo">Business Logo</label><input type="file" id="logoUpload" accept="image/*"></div> 
+                            <div class="form-group"><label for="sigUpload" data-i18n="comp_sig">Authorized Signature</label><input type="file" id="sigUpload" accept="image/*"></div> 
+                        </div> 
+                        <div class="form-group"><label for="bizName" data-i18n="comp_name">Business Name *</label><input type="text" id="bizName" class="req-field" data-bind="bizName" placeholder="My Company LLC"><span class="error-msg" data-i18n="err_req">Required field</span></div> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="bizEmail" data-i18n="comp_email">Email</label><input type="email" id="bizEmail" data-bind="bizEmail"></div> 
+                            <div class="form-group"><label for="bizPhone" data-i18n="comp_phone">Phone</label><input type="tel" id="bizPhone" data-bind="bizPhone"></div> 
+                        </div> 
+                        <div class="form-group"><label for="bizAddress" data-i18n="comp_address">Address</label><textarea id="bizAddress" data-bind="bizAddress" placeholder="Company Address"></textarea></div> 
+                        <div style="display:flex; gap: 8px; margin-top: 10px;"><button id="btnQuickSaveProfile" class="btn-success" type="button" data-i18n="comp_save">💾 Save Profile</button></div> 
+                    </div> 
+                    
+                    <div id="sec-customer" class="editor-tab-content card" role="tabpanel"> 
+                        <div class="flex-between" style="margin-bottom:16px;"> 
+                            <h2 style="margin:0; border:none;" data-i18n="cust_title">Customer Details</h2> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label for="savedClientsDropdown">Select Saved Client</label> 
+                            <select id="savedClientsDropdown"><option value="">-- Manual Entry --</option></select> 
+                        </div> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="custName" data-i18n="cust_name">Customer Name *</label><input type="text" id="custName" class="req-field" data-bind="custName" placeholder="Client Name"><span class="error-msg" data-i18n="err_req">Required field</span></div> 
+                            <div class="form-group"><label for="custCompany" data-i18n="cust_comp">Company</label><input type="text" id="custCompany" data-bind="custCompany" placeholder="Client Business"></div> 
+                        </div> 
+                        <div class="form-row"> 
+                            <div class="form-group"><label for="custEmail" data-i18n="cust_email">Email</label><input type="email" id="custEmail" data-bind="custEmail"></div> 
+                            <div class="form-group"><label for="custPhone" data-i18n="cust_phone">Phone</label><input type="tel" id="custPhone" data-bind="custPhone"></div> 
+                        </div> 
+                        <div class="form-group"><label for="custAddress" data-i18n="cust_address">Address</label><textarea id="custAddress" data-bind="custAddress" placeholder="Client Address"></textarea></div> 
+                        <div style="margin-top: 10px;"><button id="btnSaveClient" class="btn-primary" type="button">💾 Save Client to Directory</button></div> 
+                    </div> 
+                    
+                    <div id="sec-items" class="editor-tab-content card" role="tabpanel"> 
+                        <h2 data-i18n="item_title">Tax, Discount & Items List</h2> 
+                        <div class="form-row" style="background: var(--surface-hover); padding:15px; border-radius:8px; border:1px solid var(--border-color); margin-bottom:20px;"> 
+                            <div class="form-group"><label for="taxLabelInput" style="color: var(--danger-color); font-weight:bold;">Tax Label</label><input type="text" id="taxLabelInput" value="Tax" placeholder="VAT, GST, Tax" style="border-color: var(--danger-color)"></div> 
+                            <div class="form-group"><label for="taxRate" style="color: var(--danger-color); font-weight:bold;" data-i18n="item_tax">Tax Rate (%)</label><input type="number" id="taxRate" placeholder="3" min="0" step="0.01" style="border-color: var(--danger-color)"></div> 
+                            <div class="form-group"><label for="discountVal" style="color: var(--success-color); font-weight:bold;" data-i18n="item_disc">Discount Value</label><input type="number" id="discountVal" placeholder="0" min="0" step="0.01" style="border-color: var(--success-color)"></div> 
+                            <div class="form-group"><label for="shippingCost" data-i18n="item_ship">Shipping / Extras</label><input type="number" id="shippingCost" placeholder="0" min="0" step="0.01"></div> 
+                        </div> 
+                        <datalist id="itemMemoryList"></datalist> 
+                        <table class="items-editor-table"> 
+                            <thead>
+                                <tr>
+                                    <th style="width:6%; text-align:center;">#</th>
+                                    <th data-i18n="item_desc">Description *</th>
+                                    <th style="width:20%" data-i18n="item_qty">Qty *</th>
+                                    <th style="width:25%" data-i18n="item_price">Price *</th>
+                                    <th></th>
+                                </tr>
+                            </thead> 
+                            <tbody id="itemsBody"></tbody> 
+                        </table> 
+                        <button id="btnAddItem" class="btn-secondary" style="width:100%;" type="button" data-i18n="item_add">+ Add Item</button> 
+                    </div> 
+                    
+                    <div id="sec-payment" class="editor-tab-content card" role="tabpanel"> 
+                        <h2 data-i18n="pay_title">Payment Methods & Setup</h2> 
+                        <div class="form-row"> 
+                            <div class="form-group"> 
+                                <label for="savedPaymentsDropdown">Load Saved Profile</label> 
+                                <select id="savedPaymentsDropdown"><option value="">-- Manual Entry --</option></select> 
+                            </div> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label for="paymentArchType" data-i18n="pay_arch">Select Payment Method</label> 
+                            <select id="paymentArchType"><option value="bank">Direct Bank Transfer</option><option value="stripe">Stripe Gateway Link</option></select> 
+                        </div> 
+                        <div id="bankFields"> 
+                            <div class="form-group"> 
+                                <label data-i18n="pay_bank">Bank Setup Details</label> 
+                                <div class="bank-grid"> 
+                                    <input type="text" id="bankAccTitle" placeholder="Account Title" aria-label="Account Title"> 
+                                    <input type="text" id="bankName" placeholder="Bank Name" aria-label="Bank Name"> 
+                                    <input type="text" id="bankAccNo" placeholder="Account Number" aria-label="Account Number"> 
+                                    <input type="text" id="bankIban" placeholder="IBAN" aria-label="IBAN"> 
+                                    <input type="text" id="bankSwift" placeholder="SWIFT Code" aria-label="SWIFT Code"> 
+                                    <input type="text" id="bankBranch" placeholder="Branch Name" aria-label="Branch Name"> 
+                                    <input type="text" id="bankCode" placeholder="Branch Code" aria-label="Branch Code"> 
+                                    <input type="text" id="bankRef" placeholder="Reference" aria-label="Reference"> 
+                                </div> 
+                                <textarea id="bankDetails" style="display:none;" aria-label="Hidden Bank Meta Field"></textarea> 
+                            </div> 
+                        </div> 
+                        <div id="stripeFields" style="display:none;"><div class="form-group"><label for="payUrl" data-i18n="pay_stripe">Stripe Payment URL</label><input type="url" id="payUrl" data-bind="payUrl" placeholder="https://buy.stripe.com/..."></div></div> 
+                        <div class="form-group"><label for="payMethod" data-i18n="pay_head">Supported Info Text</label><input type="text" id="payMethod" data-bind="payMethod" placeholder="Scan the QR code below to make a secure payment."></div> 
+                        <div class="form-group"> 
+                            <label data-i18n="pay_qr">Payment Scan Code (QR)</label> 
+                            <div class="qr-dropzone" onclick="document.getElementById('qrUpload').click()" aria-label="Upload Payment Verification QR Code Layer" role="button" tabIndex="0"> 
+                                <span data-i18n="pay_qr_up">📁 Click to Upload Big Size QR Code Image</span> 
+                                <input type="file" id="qrUpload" accept="image/*" style="display:none;"> 
+                            </div> 
+                        </div> 
+                        <div style="margin-top: 10px;"><button id="btnSavePaymentProfile" class="btn-primary" type="button">💾 Save Payment Profile</button></div> 
+                    </div> 
+                    
+                    <div id="sec-extras" class="editor-tab-content card" role="tabpanel"> 
+                        <div class="flex-between" style="border-bottom: 1px solid var(--border-color); margin-bottom: 16px; padding-bottom: 10px;"><h2 style="margin:0; border:none;" data-i18n="ext_title">Additional Parameters</h2></div> 
+                        <div class="form-group"> 
+                            <label for="notes" data-i18n="ext_notes">Notes (Press Enter for Auto-Numbering)</label> 
+                            <button id="btnSaveNotesOnly" class="btn-success btn-inline-save" type="button">💾 Save</button> 
+                            <textarea id="notes" placeholder="1. Thank you for choosing our services."></textarea> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label for="terms" data-i18n="ext_terms">Terms & Conditions (Press Enter for Auto-Numbering)</label> 
+                            <button id="btnSaveTermsOnly" class="btn-success btn-inline-save" type="button">💾 Save</button> 
+                            <textarea id="terms" placeholder="1. Payment should be settled within 14 business days."></textarea> 
+                        </div> 
+                    </div> 
+                    
+                    <div id="sec-history" class="editor-tab-content card" role="tabpanel"> 
+                        <h2 data-i18n="hist_title">Analytics & Search Dashboard</h2> 
+                        <div class="dashboard-stats"> 
+                            <div class="stat-card"> 
+                                <h3>Total Invoiced</h3> 
+                                <div class="stat-value" id="dashTotalInvoiced">$ 0.00</div> 
+                            </div> 
+                            <div class="stat-card"> 
+                                <h3>Saved Clients</h3> 
+                                <div class="stat-value" id="dashTotalClients">0</div> 
+                            </div> 
+                        </div> 
+                        <div class="dashboard-actions"> 
+                            <button id="btnExportCSV" class="btn-secondary text-sm" type="button">📊 Export CSV</button> 
+                            <button id="btnBackupJSON" class="btn-primary text-sm" type="button">💾 Backup Data (JSON)</button> 
+                            <button id="btnRestoreJSON" class="btn-danger text-sm" type="button" onclick="document.getElementById('jsonUpload').click()">📂 Restore Backup</button> 
+                            <input type="file" id="jsonUpload" accept=".json" style="display:none;"> 
+                        </div> 
+                        <div class="form-group" style="margin-top:10px;"> 
+                            <label for="searchHistory" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Search Logs</label> 
+                            <input type="text" id="searchHistory" placeholder="🔍 Search logs by Client Name or Invoice Number..."> 
+                        </div> 
+                        <div id="historyLogsContainer" style="margin-top:15px; display:flex; flex-direction:column; gap:10px;"></div> 
+                    </div> 
+                    <div class="editor-spacer"></div> 
+                </form> 
+                
+                <div class="action-bar"> 
+                    <button id="btnSaveHistory" class="btn-success" type="button" data-i18n="act_save">💾 Save To History</button> 
+                    <button id="btnDownloadPDF" class="btn-primary" type="button" aria-label="Export transaction ledger to Adobe PDF Format">📥 Download PDF</button> 
+                    <button id="btnReset" class="btn-danger" type="button" data-i18n="act_reset">↺ Reset</button> 
+                </div> 
+            </section> 
+            
+            <section id="previewSection" class="preview-section" aria-label="Dynamic Output Sheet Representation"> 
+                <div id="receiptPaper" class="receipt-paper size-a4"> 
+                    <div id="invoiceWatermark" class="invoice-watermark">PAID</div> 
+                    <div class="preview-inner"> 
+                        <div class="preview-header"> 
+                            <div class="preview-logo-area"> 
+                                <div class="preview-logo"><img id="prevLogo" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" width="100" height="100" alt="Corporate Business Branding Logo" loading="lazy" decoding="async"></div> 
+                                <div class="preview-company-title"> 
+                                    <h2 id="prevBizName">Company Name</h2> 
+                                    <p id="prevBizAddress">Company Address</p> 
+                                </div> 
+                            </div> 
+                            <div class="preview-header-right"> 
+                                <div class="preview-main-h1-surrogate" id="prevType" data-i18n="prev_inv" style="font-size: 2rem; font-weight: 800; text-transform: uppercase;">Invoice</div> 
+                                <div class="inv-number"># <span id="prevNumber">INV-XXXX</span></div> 
+                            </div> 
+                        </div> 
+                        
+                        <div class="preview-meta"> 
+                            <div class="preview-meta-box"> 
+                                <div class="meta-title" data-i18n="prev_from"> 
+                                    <svg viewBox="0 0 24 24" class="svg-icon" aria-hidden="true" width="16" height="16"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> From 
+                                </div> 
+                                <div class="meta-value-title" id="prevBizNameMeta">Business Name</div> 
+                                <div class="meta-value-sub" id="prevBizAddressMeta" style="white-space: pre-wrap;"></div> 
+                                <div class="meta-value-sub" id="prevBizContact" style="margin-top:4px; font-weight: 500;"></div> 
+                            </div> 
+                            <div class="preview-meta-box"> 
+                                <div class="meta-title" data-i18n="prev_bill"> 
+                                    <svg viewBox="0 0 24 24" class="svg-icon" aria-hidden="true" width="16" height="16"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Bill To 
+                                </div> 
+                                <div class="meta-value-title" id="prevCustName">Customer Name</div> 
+                                <div class="meta-value-sub" id="prevCustCompany" style="font-style:italic; font-weight: 600; margin-bottom: 2px;"></div> 
+                                <div class="meta-value-sub" id="prevCustAddress" style="white-space: pre-wrap;"></div> 
+                                <div class="meta-value-sub" id="prevCustContact" style="margin-top:4px; font-weight: 500;"></div> 
+                            </div> 
+                            <div class="preview-meta-box"> 
+                                <div class="meta-title" data-i18n="prev_date"> 
+                                    <svg viewBox="0 0 24 24" class="svg-icon" aria-hidden="true" width="16" height="16"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg> Date 
+                                </div> 
+                                <div class="meta-value-title" id="prevDate">YYYY-MM-DD</div> 
+                            </div> 
+                        </div> 
+                        
+                        <table class="preview-table"> 
+                            <thead> 
+                                <tr> 
+                                    <th style="width:6%; text-align:center;">#</th> 
+                                    <th style="width:44%" data-i18n="tbl_desc">DESCRIPTION</th> 
+                                    <th style="width:15%; text-align:center;" data-i18n="tbl_qty">QTY</th> 
+                                    <th style="width:15%; text-align:right;" data-i18n="tbl_price">PRICE</th> 
+                                    <th style="width:20%; text-align:right;" data-i18n="tbl_amt">AMOUNT</th> 
+                                </tr> 
+                            </thead> 
+                            <tbody id="prevItemsBody">
+                                <tr>
+                                    <td style="text-align:center;">1</td>
+                                    <td>Item Description Placeholder</td>
+                                    <td style="text-align:center;">1</td>
+                                    <td style="text-align:right;">0.00</td>
+                                    <td style="text-align:right;">0.00</td>
+                                </tr>
+                            </tbody> 
+                        </table> 
+                        
+                        <div class="totals-container"> 
+                            <div class="totals-box"> 
+                                <div class="preview-totals-row"><span data-i18n="tot_sub">Subtotal:</span><span id="prevSubtotal">0.00</span></div> 
+                                <div class="preview-totals-row" id="rowDiscount" style="color:var(--success-color);"><span data-i18n="tot_disc">Discount:</span><span id="prevDiscount">-0.00</span></div> 
+                                <div class="preview-totals-row" id="rowTax" style="color:var(--danger-color);"><span id="prevTaxLabel">Tax</span>:<span id="prevTax">0.00</span></div> 
+                                <div class="preview-totals-row" id="rowShipping"><span data-i18n="tot_ship">Shipping:</span><span id="prevShipping">0.00</span></div> 
+                                <div class="preview-totals-row grand-total"><span data-i18n="tot_due">TOTAL DUE:</span><span id="prevTotal">0.00</span></div> 
+                            </div> 
+                        </div> 
+                        
+                        <div class="premium-bottom-container"> 
+                            
+                            <div class="premium-row-three"> 
+                                <div class="premium-card" id="wrapPayment"> 
+                                    <h4> 
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M4 10h3v7H4zM10.5 10h3v7h-3zM2 19h20v3H2zM17 10h3v7H4zM12 1L2 6v2h20V6z"/></svg> BANK DETAILS 
+                                    </h4> 
+                                    <div class="bank-details-text" id="prevBankDetails" style="white-space:pre-wrap;"></div> 
+                                    <a id="prevPayUrl" href="#" target="_blank" style="margin-top:8px; color:var(--receipt-theme-color); font-weight:600; text-decoration:none; word-break:break-all; font-size:0.75rem;"></a> 
+                                    <div style="margin-top:auto; padding-top:10px;"> 
+                                        <div style="font-size:0.65rem; color:var(--receipt-theme-color); font-weight:700; margin-bottom:4px; text-transform:uppercase;" data-i18n="card_acc">We Accept</div> 
+                                        <div class="payment-icons"> 
+                                            <span style="color:#1434CB; font-weight: bold; margin-right: 8px; font-size: 0.7rem;">VISA</span> 
+                                            <span style="color:#EB001B; font-weight: bold; margin-right: 8px; font-size: 0.7rem;">Mastercard</span> 
+                                            <span style="color:#000; font-weight: bold; font-size: 0.7rem;">Apple Pay</span> 
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                
+                                <div class="premium-card" id="wrapQr"> 
+                                    <h4> 
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-3 0h2v2h-2zm3 3h3v2h-3zm-3 0h2v2h-2zm3 3h3v2h-3zm-3 0h2v2h-2zm-3-3h2v2h-2zm0-3h2v2h-2zm0 6h2v2h-2z"/></svg> SCAN TO PAY 
+                                    </h4> 
+                                    <div class="premium-qr-wrapper"> 
+                                        <div style="font-size:0.65rem; color:#475569; font-weight:500; margin-bottom:2px;" id="prevPayMethod">Scan QR code for quick payment</div> 
+                                        <img id="prevQr" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" width="90" height="90" alt="Payment Verification QR Code" loading="lazy" decoding="async"> 
+                                        <div style="font-size:0.6rem; color:#94a3b8; font-weight:500; margin-top:2px;" data-i18n="card_sup">Supports banking apps & crypto</div> 
+                                    </div> 
+                                </div> 
+                                
+                                <div class="premium-card" id="wrapTermsCard"> 
+                                    <div id="wrapTerms" style="height: 100%; display: flex; flex-direction: column;"> 
+                                        <h4> 
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> TERMS & CONDITIONS 
+                                        </h4> 
+                                        <div id="prevTermsList" class="notes-terms-list"></div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                            
+                            <div class="premium-row-two"> 
+                                <div class="premium-card"> 
+                                    <div id="wrapNotes" style="height: 100%; display: flex; flex-direction: column;"> 
+                                        <h4> 
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> NOTES 
+                                        </h4> 
+                                        <div id="prevNotesList" class="notes-terms-list"></div> 
+                                    </div> 
+                                </div> 
+                                
+                                <div class="premium-card"> 
+                                    <div class="premium-signature-block"> 
+                                        <img id="prevSig" class="premium-sig-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" width="150" height="55" alt="Authorized Digital Signature Stamp" loading="lazy" decoding="async"> 
+                                        <div class="premium-sig-line" data-i18n="foot_sig">Authorized Signature</div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                            
+                        </div> 
+                        <div class="footer-thank-you" data-i18n="foot_thx" style="margin-top: 25px;">Thank you for your business!</div> 
+                    </div> 
+                </div> 
+            </section> 
+        </div> 
+        
+        <section class="seo-master-container" aria-label="Comprehensive Business Invoicing Resource Center"> 
+            <div class="seo-article-wrapper"> 
+                <article class="seo-main-text"> 
+                    <h2>Complete Guide to Modern Enterprise Invoicing and Receipts</h2> 
+                    <p>Creating professional, mathematically flawless invoices is a core operational requirement for any growing business. Whether you are an independent freelancer or managing an international development team, utilizing a highly reliable <strong>free online invoice generator</strong> removes significant friction from your daily accounting processes. Modern businesses need tools that natively support multi-currency calculations, accommodate regional tax variables, and prioritize extreme data privacy.</p> 
+                    
+                    <h3>Understanding the Difference Between an Invoice and a Receipt</h3> 
+                    <p>Maintaining clear distinctions between accounting documents is essential for accurate ledgering. An <em>invoice</em> functions as a formal request for payment issued by a merchant prior to account settlement. It strictly details project terms, structured remittance guidelines, tax variations, and line-item breakdowns. Conversely, a <em>business receipt</em> serves exclusively as official confirmation of completed asset distribution, acknowledging that all financial liabilities have been fully resolved.</p> 
+                    
+                    <h2>Optimizing for Global VAT and GST Compliance</h2> 
+                    
+                    <h3>Customizable Tax Setups for European and UK Markets</h3> 
+                    <p>If you operate across borders, ensuring your documentation accurately reflects Value Added Tax (VAT) is crucial. Our E-X-P-R-T invoicing tool allows you to dynamically inject unique corporate VAT IDs and specify precise percentage allocations directly into the document layout. Clear, transparent breakdowns prevent auditory delays and improve cash flow velocity with your European partners.</p> 
+                    
+                    <h3>GST Configurations for Australia, Canada, and Asia</h3> 
+                    <p>For service providers engaging with clients in Australia or Canada, integrating exact Goods and Services Tax (GST) mechanisms is mandatory. The E-X-P-R-T platform supports highly customizable tax labeling. You can adjust the terminology to perfectly mirror local tax laws, shifting seamlessly between VAT, GST, or standard state sales tax parameters as required by your client's location.</p> 
+                    
+                    <h2>Advanced Privacy and Security: 100% Offline Processing</h2> 
+                    <p>Legacy billing software frequently relies on cloud uploads, introducing unnecessary vulnerabilities to your private financial data. We have revolutionized this process. Our enterprise invoicing web application utilizes a powerful, <strong>100% offline, no-upload architecture</strong>. Every calculation, transactional entry, and PDF rendering event is executed entirely within your local browser. Your confidential data never touches our servers.</p> 
+                    
+                    <h3>The Multi-Currency Advantage for Seamless Payouts</h3> 
+                    <p>Scaling a digital business means interacting with a global audience. True enterprise software must effortlessly transition between sovereign currencies like USD, EUR, GBP, AUD, CAD, and PKR. By providing your clients with native currency figures, you reduce conversion anxiety, streamline accounting departments, and drastically shorten average payout cycles.</p> 
+                    
+                    <div class="seo-faq-block"> 
+                        <h2>Frequently Asked Questions About Invoice Generation</h2> 
+                        <div class="seo-faq-item"> 
+                            <h3>How do I create a PDF invoice with this generator?</h3> 
+                            <p>Populate your essential document settings, upload your brand logo, fill out your client's contact profile, insert your itemized products or services, and click 'Download PDF'. Your browser will instantly generate a compliant, structured business record without needing a network connection.</p> 
+                        </div> 
+                        <div class="seo-faq-item"> 
+                            <h3>Is it possible to add digital signatures and QR codes?</h3> 
+                            <p>Yes. The platform provides dedicated premium modules where you can attach your transparent digital signature and upload a custom scanning QR code, making it incredibly easy for clients to pay via standard banking apps or crypto wallets.</p> 
+                        </div> 
+                        <div class="seo-faq-item"> 
+                            <h3>How is my client data saved if the tool is offline?</h3> 
+                            <p>Because E-X-P-R-T Invoice Pro champions privacy, it stores your configurations securely using local browser storage mechanisms. You also have the direct ability to backup your complete ledger into a localized JSON payload or export standard CSV files for offline archiving.</p> 
+                        </div> 
+                    </div> 
+                </article> 
+                
+                <aside class="seo-sidebar-cards"> 
+                    <div class="seo-helper-card"> 
+                        <h3>100% Client-Side Private</h3> 
+                        <p>Enjoy absolute security with our strict <strong>no-upload</strong> policy. Financial data, line items, and addresses are compiled entirely within your local machine's memory, ensuring impenetrable data safety.</p> 
+                    </div> 
+                    <div class="seo-helper-card"> 
+                        <h3>Enterprise Web Performance</h3> 
+                        <p>Constructed using deeply optimized HTML5 semantics and CSS to fulfill rigorous Google Core Web Vitals targets, minimizing Layout Shifts (CLS) and maximizing rendering speeds.</p> 
+                    </div> 
+                    <div class="seo-helper-card"> 
+                        <h3>Precision Typography Layouts</h3> 
+                        <p>Features standardized typographic grids designed explicitly to perfectly map virtual DOM elements onto static A4 PDF dimensions without risking visual fragmentation.</p> 
+                    </div> 
+                </aside> 
+            </div> 
+        </section> 
+    </main>
+
+    <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle"> 
+        <div class="modal-content"> 
+            <h2 id="authTitle" style="margin-bottom:20px;">Login</h2> 
+            <button class="auth-btn google-btn" aria-label="Sign in with Google"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" alt="Google Logo" loading="lazy" decoding="async"> Continue with Google</button> 
+            <div style="text-align:center; color:#9ca3af; margin:15px 0;">or use email</div> 
+            <label for="authEmail" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Email</label> 
+            <input type="email" class="auth-input" placeholder="Email Address" id="authEmail"> 
+            <label for="authPass" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Password</label> 
+            <input type="password" class="auth-input" placeholder="Password" id="authPass"> 
+            <button class="btn-primary auth-btn" id="btnSubmitAuth">Continue</button> 
+            <div class="auth-switch" id="authSwitchText">Don't have an account? <a href="#" onclick="app.showAuth('signup'); return false;">Sign up</a></div> 
+            <button class="btn-danger close-modal text-sm" style="width:100%; margin-top:10px;" aria-label="Close Modal">Cancel</button> 
+        </div> 
+    </div> 
+    
+    <footer class="site-footer">
+        <nav class="footer-nav" aria-label="Footer Legal and Corporate Links">
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact Support</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms">Terms & Conditions</a>
+            <a href="/disclaimer">Disclaimer</a>
+        </nav>
+        <p>© 2026 E-X-P-R-T Enterprise Pro. All Rights Reserved. Fully Certified Global Auditing Formats.</p>
+    </footer>
+    
+    <script>
+        /* Monitor element status modifications to keep outer shell card system layout beautifully uniform */ 
+        (function() { 
+            const wrapTerms = document.getElementById('wrapTerms'); 
+            const wrapTermsCard = document.getElementById('wrapTermsCard'); 
+            const observer = new MutationObserver(() => { 
+                if (wrapTerms && wrapTermsCard) { 
+                    wrapTermsCard.style.display = wrapTerms.style.display; 
+                } 
+            }); 
+            if (wrapTerms) { 
+                observer.observe(wrapTerms, { attributes: true, attributeFilter: ['style'] }); 
+                wrapTermsCard.style.display = wrapTerms.style.display; 
+            } 
+        })();
+    </script>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>
