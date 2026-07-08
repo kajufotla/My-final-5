@@ -1,7 +1,4 @@
-// ==========================================
-// CORE COMPUTATION & STORAGE EXECUTIONS
-// ==========================================
-const executeStorageBackup = (data) => {
+export const executeStorageBackup = (data) => {
   try {
     localStorage.setItem('rgp_secure_auto_backup', JSON.stringify(data));
   } catch(e) {
@@ -9,27 +6,15 @@ const executeStorageBackup = (data) => {
   }
 };
 
-const generateAutoNumber = (historyLogs) => {
+export const generateAutoNumber = (historyLogs) => {
   const year = new Date().getFullYear();
   let currentSequence = parseInt(localStorage.getItem('rgp_invoice_seq_counter') || '0', 10);
-  
-  if (historyLogs && historyLogs.length > 0) {
-    historyLogs.forEach(h => {
-      if (h.number && h.number.startsWith(`INV-${year}-`)) {
-        const extractedId = parseInt(h.number.split('-')[2], 10);
-        if (!isNaN(extractedId) && extractedId > currentSequence) {
-          currentSequence = extractedId;
-        }
-      }
-    });
-  }
-
   const nextSequence = currentSequence + 1;
   localStorage.setItem('rgp_invoice_seq_counter', nextSequence.toString());
   return `INV-${year}-${nextSequence.toString().padStart(5, '0')}`;
 };
 
-const formatMoney = (amount, currencySelectValue) => {
+export const formatMoney = (amount, currencySelectValue) => {
   const val = currencySelectValue || 'USD|$';
   const parts = val.split('|');
   const code = parts[0] || 'USD';
