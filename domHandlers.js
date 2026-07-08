@@ -72,42 +72,62 @@ export const updateDropdowns = (savedClients, savedPayments, sanitizeHTML) => {
   }
 };
 
-// 4. Client Dropdown Change Interceptor
+// 4. Client Dropdown Change Interceptor (Fixed to dynamic check)
 export const initClientSelection = (savedClients, cache, updatePreview) => {
-  document.getElementById('savedClientsDropdown')?.addEventListener('change', (e) => {
+  // Purانے ایونٹ لسنر کے ٹکراؤ سے بچنے کے لیے پہلے ریموو کرنا یا ڈاکیومنٹ لیول پر ہینڈل کرنا بہتر ہے
+  const dropdown = document.getElementById('savedClientsDropdown');
+  if (!dropdown) return;
+
+  // موجودہ لسنر کو صاف کر کے نیا لگانا تاکہ کلک/چینج ہمیشہ کام کرے
+  dropdown.removeEventListener('change', dropdown._changeHandler);
+  
+  dropdown._changeHandler = (e) => {
     if(e.target.value !== "") {
       const c = savedClients[e.target.value];
-      if(cache.custName) cache.custName.value = c.custName || '';
-      if(cache.custCompany) cache.custCompany.value = c.custCompany || '';
-      if(cache.custEmail) cache.custEmail.value = c.custEmail || '';
-      if(cache.custPhone) cache.custPhone.value = c.custPhone || '';
-      if(cache.custAddress) cache.custAddress.value = c.custAddress || '';
-      updatePreview();
+      if(c) {
+        if(cache.custName) cache.custName.value = c.custName || '';
+        if(cache.custCompany) cache.custCompany.value = c.custCompany || '';
+        if(cache.custEmail) cache.custEmail.value = c.custEmail || '';
+        if(cache.custPhone) cache.custPhone.value = c.custPhone || '';
+        if(cache.custAddress) cache.custAddress.value = c.custAddress || '';
+        updatePreview();
+      }
     }
-  });
+  };
+  
+  dropdown.addEventListener('change', dropdown._changeHandler);
 };
 
-// 5. Payment Profile Selection Interceptor
+// 5. Payment Profile Selection Interceptor (Fixed to dynamic check)
 export const initPaymentSelection = (savedPayments, cache, updatePreview) => {
-  document.getElementById('savedPaymentsDropdown')?.addEventListener('change', (e) => {
+  const dropdown = document.getElementById('savedPaymentsDropdown');
+  if (!dropdown) return;
+
+  dropdown.removeEventListener('change', dropdown._changeHandler);
+
+  dropdown._changeHandler = (e) => {
     if(e.target.value !== "") {
       const p = savedPayments[e.target.value];
-      if(cache.paymentArchType) cache.paymentArchType.value = p.payArch || '';
-      if(cache.bankDetails) cache.bankDetails.value = p.bank || '';
-      if(cache.payUrl) cache.payUrl.value = p.stripe || '';
-      if(cache.payMethod) cache.payMethod.value = p.payMethodText || '';
-      if(document.getElementById('bankAccTitle')) document.getElementById('bankAccTitle').value = p.bTitle || '';
-      if(document.getElementById('bankName')) document.getElementById('bankName').value = p.bName || '';
-      if(document.getElementById('bankAccNo')) document.getElementById('bankAccNo').value = p.bAcc || '';
-      if(document.getElementById('bankIban')) document.getElementById('bankIban').value = p.bIban || '';
-      if(document.getElementById('bankSwift')) document.getElementById('bankSwift').value = p.bSwift || '';
-      if(document.getElementById('bankBranch')) document.getElementById('bankBranch').value = p.bBranch || '';
-      if(document.getElementById('bankCode')) document.getElementById('bankCode').value = p.bCode || '';
-      if(document.getElementById('bankRef')) document.getElementById('bankRef').value = p.bRef || '';
-      if(cache.paymentArchType) cache.paymentArchType.dispatchEvent(new Event('change'));
-      updatePreview();
+      if(p) {
+        if(cache.paymentArchType) cache.paymentArchType.value = p.payArch || '';
+        if(cache.bankDetails) cache.bankDetails.value = p.bank || '';
+        if(cache.payUrl) cache.payUrl.value = p.stripe || '';
+        if(cache.payMethod) cache.payMethod.value = p.payMethodText || '';
+        if(document.getElementById('bankAccTitle')) document.getElementById('bankAccTitle').value = p.bTitle || '';
+        if(document.getElementById('bankName')) document.getElementById('bankName').value = p.bName || '';
+        if(document.getElementById('bankAccNo')) document.getElementById('bankAccNo').value = p.bAcc || '';
+        if(document.getElementById('bankIban')) document.getElementById('bankIban').value = p.bIban || '';
+        if(document.getElementById('bankSwift')) document.getElementById('bankSwift').value = p.bSwift || '';
+        if(document.getElementById('bankBranch')) document.getElementById('bankBranch').value = p.bBranch || '';
+        if(document.getElementById('bankCode')) document.getElementById('bankCode').value = p.bCode || '';
+        if(document.getElementById('bankRef')) document.getElementById('bankRef').value = p.bRef || '';
+        if(cache.paymentArchType) cache.paymentArchType.dispatchEvent(new Event('change'));
+        updatePreview();
+      }
     }
-  });
+  };
+
+  dropdown.addEventListener('change', dropdown._changeHandler);
 };
 
 // 6. Notes and Snippets Library Rendering
