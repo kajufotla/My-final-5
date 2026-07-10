@@ -1,16 +1,31 @@
 export const handleImageUpload = (file, callback) => {
   if (!file) return;
   const reader = new FileReader();
+  
+  reader.onerror = () => console.error("Error reading file.");
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
       let ctx = canvas.getContext('2d');
       let width = img.width, height = img.height;
-      if (width > 800) { height = Math.round((height * 800) / width); width = 800; }
-      canvas.width = width; canvas.height = height;
+      
+      // Enterprise constraint: Max width 800px to keep PDF size optimal
+      if (width > 800) { 
+        height = Math.round((height * 800) / width); 
+        width = 800; 
+      }
+      
+      canvas.width = width; 
+      canvas.height = height;
       ctx.drawImage(img, 0, 0, width, height);
+      
       callback(canvas.toDataURL('image/jpeg', 0.75));
+      
+      // Memory cleanup for optimal browser performance (Crucial for SaaS)
+      ctx.clearRect(0, 0, width, height);
+      canvas.width = 0; 
+      canvas.height = 0;
     };
     img.src = e.target.result;
   };
@@ -38,24 +53,56 @@ export const executePdfPrint = (cache) => {
 export const exportToCSV = (historyLogs) => {
   if(!historyLogs || historyLogs.length === 0) return alert("No data to export");
   const headers = ['Invoice Number', 'Issue Date', 'Client Name', 'Total Amount', 'Status'];
-  const rows = historyLogs.map(h => [h.receiptNumber, h.issueDate, h.custName, h.totalVal || h.amount, h.invoiceStatus]);
+  
+  // Enterprise Grade CSV Export: Proper escaping for special characters/commas
+  const escapeCSV = (str) => {
+    if (str === null || str === undefined) return '""';
+    const stringified = String(str);
+    if (stringified.includes(',') || stringified.includes('"') || stringified.includes('\n')) {
+      return `"${stringified.replace(/"/g, '""')}"`;
+    }
+    return stringified;
+  };
+
+  const rows = historyLogs.map(h => [
+    escapeCSV(h.receiptNumber), 
+    escapeCSV(h.issueDate), 
+    escapeCSV(h.custName), 
+    escapeCSV(h.totalVal || h.amount), 
+    escapeCSV(h.invoiceStatus)
+  ]);
+  
   const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'invoice_history.csv'; a.click();
+  const a = document.createElement('a'); 
+  a.href = url; 
+  a.download = 'invoice_history.csv'; 
+  a.click();
+  URL.revokeObjectURL(url); // Prevent memory leaks
 };
 
 export const backupToJSON = (historyLogs) => {
   if(!historyLogs || historyLogs.length === 0) return alert("No data to backup");
   const blob = new Blob([JSON.stringify(historyLogs, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'invoice_backup.json'; a.click();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); 
+  a.href = url; 
+  a.download = 'invoice_backup.json'; 
+  a.click();
+  URL.revokeObjectURL(url);
 };
 
 export const restoreFromJSON = (file, callback) => {
+  if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
-      try { callback(JSON.parse(e.target.result)); } 
-      catch(err) { alert("Invalid JSON backup file."); }
+      try { 
+        callback(JSON.parse(e.target.result)); 
+      } 
+      catch(err) { 
+        alert("Invalid JSON backup file. Please ensure the file is not corrupted."); 
+      }
   };
   reader.readAsText(file);
 };
